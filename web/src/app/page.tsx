@@ -94,7 +94,7 @@ export default function Home() {
           <div className="w-full max-w-xl">
             <label
               htmlFor="image-upload"
-              className={`group flex flex-col items-center justify-center w-full h-40 sm:h-56 border-3 border-dashed rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md ${isDragging ? 'bg-blue-50 border-blue-500 scale-105' : 'bg-white/50 hover:bg-white/80 border-gray-300 hover:border-blue-400'}`}
+              className={`group flex flex-col items-center justify-center w-full h-40 sm:h-56 border-3 border-dashed rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md ${isDragging ? 'bg-blue-50 border-blue-500' : 'bg-white/50 hover:bg-white/80 border-gray-300 hover:border-blue-400'}`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
@@ -168,7 +168,7 @@ export default function Home() {
                       {palette.map((color, index) => (
                         <div key={index} className="group flex flex-col items-center gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer" onClick={() => navigator.clipboard.writeText(color.hex)}>
                           <div
-                            className="w-full h-20 rounded-xl shadow-inner border border-gray-200/50 group-hover:scale-105 group-hover:shadow-md transition-all duration-300"
+                            className="w-full h-20 rounded-xl shadow-inner group-hover:scale-105 group-hover:shadow-md transition-all duration-300"
                             style={{ backgroundColor: color.hex }}
                           ></div>
                           <span className="font-mono text-sm font-semibold text-gray-700 group-hover:text-purple-600 transition-colors">{color.hex}</span>

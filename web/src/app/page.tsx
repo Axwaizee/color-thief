@@ -13,11 +13,11 @@ export default function Home() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [dominantColor, setDominantColor] = useState<ColorInfo | null>(null);
   const [palette, setPalette] = useState<ColorInfo[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
+  const processFile = (file: File) => {
+    if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onload = (event) => {
         setImageSrc(event.target?.result as string);
@@ -26,6 +26,28 @@ export default function Home() {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) processFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) processFile(file);
   };
 
   const extractColors = () => {
@@ -72,7 +94,10 @@ export default function Home() {
           <div className="w-full max-w-xl">
             <label
               htmlFor="image-upload"
-              className="group flex flex-col items-center justify-center w-full h-40 sm:h-56 border-3 border-dashed rounded-xl sm:rounded-2xl cursor-pointer bg-white/50 hover:bg-white/80 border-gray-300 hover:border-blue-400 transition-all duration-300 shadow-sm hover:shadow-md"
+              className={`group flex flex-col items-center justify-center w-full h-40 sm:h-56 border-3 border-dashed rounded-xl sm:rounded-2xl cursor-pointer transition-all duration-300 shadow-sm hover:shadow-md ${isDragging ? 'bg-blue-50 border-blue-500 scale-105' : 'bg-white/50 hover:bg-white/80 border-gray-300 hover:border-blue-400'}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
             >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <div className="p-3 sm:p-4 bg-blue-50 text-blue-500 rounded-full mb-2 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
